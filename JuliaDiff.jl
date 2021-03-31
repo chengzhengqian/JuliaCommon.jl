@@ -353,6 +353,14 @@ function Base.:*(b::T,a::Diff2{T}) where T <: AbstractFloat
     mulDiffWithNumber(a,b)
 end
 
+function Base.:*(a::Diff2{T},b::Number) where T <: AbstractFloat
+    mulDiffWithNumber(a,convert(T,b))
+end
+
+function Base.:*(b::Number,a::Diff2{T}) where T <: AbstractFloat
+    mulDiffWithNumber(a,convert(T,b))
+end
+
 # this will change a, and assuming a and b are different
 function addDiff!(a::Diff2{T},b::Diff2{T}) where T <: AbstractFloat
     a.data[:]=a.data+b.data
