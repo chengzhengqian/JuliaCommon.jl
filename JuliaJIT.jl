@@ -70,6 +70,12 @@ function compileAsm(asm,filebase; mode="gas")
     end
     if(mode=="nasm")
         run(`nasm $(asmfile) -f bin -o $(filebase)`)
+    end
+    if(mode=="arm")
+        objfile="$(filebase).o"
+        run(`as $(asmfile) -o $(objfile) `)
+        # ld does not work on arm
+        run(`objcopy -O binary -j .text $(objfile) $(filebase)`)
     end    
 end
 
@@ -94,7 +100,11 @@ see objdump for more information
 function disassembleJIT(jitFunc::JITFunc;syntax="att")
     filename="$(@__DIR__)/czq_dump_jit.bin"
     dumpJITFunction(jitFunc::JITFunc,filename)
-    run(`objdump -b binary -M $(syntax) -m i386:x86-64 -D $(filename)`)
+    if(syntax=="arm")
+        run(`objdump -b binary  -m aarch64 -D $(filename)`)
+    else
+        run(`objdump -b binary -M $(syntax) -m i386:x86-64 -D $(filename)`)
+    end
 end
 
 end
