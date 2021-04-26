@@ -140,3 +140,4 @@ end
 # x=linspace(-1,1,100)
 # @plot x x.*x x sin.(x) x cos.(x) x tan.(x)
 end
+

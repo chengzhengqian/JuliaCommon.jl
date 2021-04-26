@@ -455,6 +455,14 @@ function Base.:+(b::Diff2{T},a::Number,) where T <: AbstractFloat
     wrapAsDiff2([convert(T,a)])+b
 end
 
+function Base.:-(a::Number,b::Diff2{T}) where T <: AbstractFloat
+    wrapAsDiff2([convert(T,a)])-b
+end
+
+function Base.:-(b::Diff2{T},a::Number,) where T <: AbstractFloat
+    b-wrapAsDiff2([convert(T,a)])
+end
+
 
 
 

@@ -93,3 +93,8 @@ g1_new=cat(reshape(g1_new,9))
 
 func="one_band_N_3_symmetric_new" 
 include("/home/chengzhengqian/Documents/research/zhengqian/discretized_action/generic_solver/src/gene/$(func).jl")
+
+using JuliaDiff
+a=input([1.0])
+∇(a-1,a,a)
+
