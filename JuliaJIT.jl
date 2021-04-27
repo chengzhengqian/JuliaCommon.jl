@@ -10,6 +10,11 @@ end
 # notice ccall must use a const lib path
 
 const  libpath="$(@__DIR__)/libexecfunc.so"
+const genepath="$(@__DIR__)/gene"
+if(!isdir(genepath))
+    mkdir(genepath)
+end
+
 
 """
 add finalizer
@@ -17,7 +22,7 @@ add finalizer
 function JITFunc(filename)
     size=Vector{Int64}(undef,1)
     dir=@__DIR__
-    filename="$(dir)/gene/$(filename)"
+    filename="$(genepath)/$(filename)"
     ptr_func=ccall((:loadBinary,libpath),Ptr{UInt8},(Ptr{UInt8},Ptr{Int64}),pointer(filename),size)
     result=JITFunc(ptr_func,size)
     f(result)=(@async println("remove $(result)");remove(result))
@@ -60,7 +65,7 @@ add different mode
 """
 function compileAsm(asm,filebase; mode="gas")
     dir=@__DIR__
-    filebase="$(dir)/gene/$(filebase)"
+    filebase="$(genepath)/$(filebase)"
     asmfile="$(filebase).s"
     writeString(asmfile,asm)
     if(mode=="gas")
